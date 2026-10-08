@@ -19,7 +19,7 @@ Para ver: abra `index.html` no navegador.
 - [x] **Cardápio real**: `js/catalog.js` copiado do cardápio da unidade Dom Pedro - Ipiranga (Saipos). Itens com preço 0 aparecem como "Consulte o valor".
 - [x] **Foto do hero**: `assets/hero-donut*` aprovada para uso.
 - [ ] **Fotos**: colocar as fotos em `assets/fotos/` e preencher `image` de cada produto. Sem foto, o site desenha um donut ilustrado.
-- [ ] **Logo**: trocar o texto "BEM QUERER" no header e no rodapé de `index.html` pela logo original (`<img src="assets/logo.png" ...>`), sem distorcer.
+- [x] **Logo**: logo original em `assets/logo.png` (com versões `logo-128.webp`, `logo-256.webp`, favicon e ícone da tela inicial).
 - [ ] **WhatsApp**: preencher `WHATSAPP_NUMBER` em `js/main.js` (ex.: `5511999999999`).
 - [ ] **Instagram**: link no rodapé de `index.html`.
 - [ ] **Nossa história**: texto de exemplo; substituir pela história real.

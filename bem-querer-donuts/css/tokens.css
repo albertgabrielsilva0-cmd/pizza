@@ -34,7 +34,6 @@
   /* ---- Tipografia ---- */
   --font-display: "Fredoka", "Bree Serif", system-ui, sans-serif;  /* títulos e destaques */
   --font-body:    "Nunito Sans", "Poppins", system-ui, sans-serif; /* textos, menus e botões */
-  --font-logo:    "Bree Serif", Georgia, serif;                     /* só no placeholder da logo */
 
   --fs-xs:   0.8125rem;
   --fs-sm:   0.9375rem;
@@ -83,7 +82,7 @@
   /* ---- Layout ---- */
   --container: 1180px;
   --gutter: clamp(1rem, 4vw, 2rem);
-  --header-h: 72px;
+  --header-h: 80px;
 }
 
 @media (prefers-reduced-motion: reduce) {

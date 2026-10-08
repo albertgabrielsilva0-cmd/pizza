@@ -7,10 +7,12 @@
 <meta name="theme-color" content="#FBB0C6">
 <meta name="description" content="Bem Querer Donuts — um mundo de sabor em cada mordida. Escolha seus sabores favoritos e peça pelo WhatsApp.">
 <title>Bem Querer Donuts</title>
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="preload" as="image" type="image/webp" imagesrcset="assets/hero-donut-480.webp 480w, assets/hero-donut-736.webp 736w" imagesizes="(max-width: 960px) 100vw, 50vw">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bree+Serif&family=Fredoka:wght@500;600;700&family=Nunito+Sans:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito+Sans:wght@400;600;700;800&display=swap">
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/style.css">
 </head>
@@ -41,11 +43,8 @@
 
 <header class="site-header">
   <div class="container header-inner">
-    <!-- TROCAR: substitua o texto pela logo original
-         (<img src="assets/logo.png" alt="Bem Querer Donuts">), sem distorcer. -->
     <a href="#inicio" class="logo" aria-label="Bem Querer Donuts — início">
-      <span class="logo-mark" aria-hidden="true"></span>
-      <span class="logo-text">BEM QUERER<small>DONUTS</small></span>
+      <img class="logo-img" src="assets/logo-128.webp" srcset="assets/logo-128.webp 1x, assets/logo-256.webp 2x" width="64" height="64" alt="Bem Querer Donuts Gourmet">
     </a>
 
     <nav class="site-nav" id="menu" aria-label="Principal" data-menu>
@@ -202,7 +201,7 @@
 <footer class="site-footer">
   <div class="container footer-inner">
     <div class="footer-brand">
-      <span class="logo-text logo-text--light">BEM QUERER<small>DONUTS</small></span>
+      <img class="footer-logo" src="assets/logo-256.webp" width="96" height="96" alt="Bem Querer Donuts Gourmet" loading="lazy">
       <p>Um mundo de sabor em cada mordida!</p>
       <address class="footer-address">
         Bem Querer Donuts Dom Pedro - Ipiranga<br>
