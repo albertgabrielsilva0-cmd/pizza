@@ -1,0 +1,94 @@
+/* ==========================================================
+   Bem Querer Donuts — Design tokens
+   Fonte única da identidade visual. Altere aqui, nunca nos
+   componentes. Cores aproximadas a partir das imagens da marca.
+   ========================================================== */
+
+:root {
+  /* ---- Paleta da marca ---- */
+  --color-pink:        #F50078; /* Rosa vibrante — cor principal (botões, destaques) */
+  --color-pink-strong: #D10066; /* Rosa escuro — hover e textos rosa pequenos (contraste AA) */
+  --color-pink-light:  #F7E9EE; /* Rosa-claro — fundos secundários e seções alternadas */
+  --color-white:       #FFFFFF; /* Branco — fundo principal */
+  --color-ink:         #171717; /* Preto carvão — textos, títulos, contornos */
+  --color-gold:        #F5A623; /* Amarelo-dourado — apoio, usar com moderação */
+
+  /* ---- Papéis semânticos ---- */
+  --bg:            var(--color-white);
+  --bg-alt:        var(--color-pink-light);
+  --text:          var(--color-ink);
+  --text-muted:    #5C5258;
+  --accent:        var(--color-pink);
+  --accent-hover:  var(--color-pink-strong);
+  --on-accent:     var(--color-white);
+  --border:        #EADDE3;
+  --outline:       var(--color-ink);
+
+  /* ---- Cores de confeitos (elementos decorativos) ---- */
+  --sprinkle-1: var(--color-pink);
+  --sprinkle-2: var(--color-gold);
+  --sprinkle-3: #34B7E8;
+  --sprinkle-4: #7BC86C;
+
+  /* ---- Tipografia ---- */
+  --font-display: "Fredoka", "Bree Serif", system-ui, sans-serif;  /* títulos e destaques */
+  --font-body:    "Nunito Sans", "Poppins", system-ui, sans-serif; /* textos, menus e botões */
+  --font-logo:    "Bree Serif", Georgia, serif;                     /* só no placeholder da logo */
+
+  --fs-xs:   0.8125rem;
+  --fs-sm:   0.9375rem;
+  --fs-base: 1rem;
+  --fs-md:   1.125rem;
+  --fs-lg:   1.375rem;
+  --fs-xl:   clamp(1.75rem, 1.3rem + 2vw, 2.5rem);
+  --fs-hero: clamp(2.5rem, 1.6rem + 4.5vw, 4.5rem);
+
+  --fw-regular: 400;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  --lh-tight: 1.1;
+  --lh-body: 1.6;
+
+  /* ---- Espaçamento (escala de 4px) ---- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4.5rem;
+  --space-9: 6rem;
+
+  /* ---- Formas ---- */
+  --radius-sm:   8px;   /* botões: cantos levemente arredondados */
+  --radius-md:   14px;
+  --radius-lg:   24px;  /* cards */
+  --radius-pill: 999px; /* chips e selos */
+  --radius-round: 50%;  /* formas circulares inspiradas no donut */
+  --border-width: 2px;  /* contornos escuros inspirados na logo */
+
+  /* ---- Sombras ---- */
+  --shadow-sm: 0 2px 6px rgb(23 23 23 / 0.06);
+  --shadow-md: 0 10px 30px rgb(23 23 23 / 0.08);
+  --shadow-pink: 0 10px 24px rgb(245 0 120 / 0.28);
+
+  /* ---- Movimento: suave, sem exageros ---- */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-fast: 150ms;
+  --duration: 250ms;
+  --duration-slow: 400ms;
+
+  /* ---- Layout ---- */
+  --container: 1180px;
+  --gutter: clamp(1rem, 4vw, 2rem);
+  --header-h: 72px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+    --duration: 0ms;
+    --duration-slow: 0ms;
+  }
+}
