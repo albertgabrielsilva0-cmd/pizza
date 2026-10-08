@@ -22,6 +22,7 @@
   --accent-hover:  var(--color-pink-strong);
   --on-accent:     var(--color-white);
   --border:        #EADDE3;
+  --hero-bg:       #FBB0C6; /* rosa da foto do hero, para a imagem se fundir ao fundo */
   --outline:       var(--color-ink);
 
   /* ---- Cores de confeitos (elementos decorativos) ---- */

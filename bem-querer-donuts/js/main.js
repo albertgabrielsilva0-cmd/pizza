@@ -26,10 +26,28 @@ function donutSVG(art = {}, label = "") {
   return `<svg class="donut" ${a11y}><use href="#donut" style="${vars.join(";")}"/></svg>`;
 }
 
+function productArt(art = {}, label = "") {
+  if (art.kind === "drink") {
+    const a11y = label ? `role="img" aria-label="${escapeHTML(label)}"` : 'aria-hidden="true"';
+    return `<svg class="drink" ${a11y}><use href="#drink" style="--can:${art.color || "#D7141A"}"/></svg>`;
+  }
+  if (art.kind === "box") {
+    return `<div class="box-art" ${label ? `role="img" aria-label="${escapeHTML(label)}"` : 'aria-hidden="true"'}>
+      ${donutSVG({ glaze: "#FF7DB5" })}${donutSVG({ glaze: "#4A2618" })}${donutSVG({ glaze: "#FFF8EE", sprinkles: ["#F50078", "#F5A623", "#34B7E8"] })}
+    </div>`;
+  }
+  return donutSVG(art, label);
+}
+
 function productMedia(p) {
   return p.image
     ? `<img src="${escapeHTML(p.image)}" alt="${escapeHTML(p.name)}" loading="lazy">`
-    : donutSVG(p.art, p.name);
+    : productArt(p.art, p.name);
+}
+
+function priceText(p) {
+  if (p.priceLabel) return p.priceLabel;
+  return p.price > 0 ? formatBRL(p.price) : "Consulte o valor";
 }
 
 /* ---------- catálogo ---------- */
@@ -38,17 +56,29 @@ function renderFeatured() {
   if (!el) return;
   el.innerHTML = catalog.products
     .filter((p) => p.featured)
-    .slice(0, 3)
     .map((p) => {
       const art = p.art || {};
       return `
       <a class="featured-card" href="#p-${escapeHTML(p.id)}" style="--card-bg:${art.bg || "var(--bg-alt)"}"${art.dark ? " data-dark" : ""}>
-        ${p.image ? `<img class="featured-img" src="${escapeHTML(p.image)}" alt="" loading="lazy">` : donutSVG(art)}
+        ${p.image ? `<img class="featured-img" src="${escapeHTML(p.image)}" alt="" loading="lazy">` : productArt(art)}
         <span class="featured-name">${escapeHTML(p.name)}</span>
+        <span class="featured-price">${priceText(p)}</span>
         <span class="link-arrow">Ver produto <span aria-hidden="true">→</span></span>
       </a>`;
     })
     .join("");
+}
+
+function setFilter(filter) {
+  document.querySelectorAll("[data-filters] .chip").forEach((c) => {
+    const active = c.dataset.filter === filter;
+    c.classList.toggle("is-active", active);
+    c.setAttribute("aria-pressed", active);
+    if (active) c.scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" });
+  });
+  document.querySelectorAll("[data-products] .menu-group").forEach((group) => {
+    group.hidden = filter !== "todos" && group.dataset.category !== filter;
+  });
 }
 
 function renderFilters() {
@@ -61,40 +91,51 @@ function renderFilters() {
 
   el.addEventListener("click", (e) => {
     const chip = e.target.closest("[data-filter]");
-    if (!chip) return;
-    el.querySelectorAll(".chip").forEach((c) => {
-      const active = c === chip;
-      c.classList.toggle("is-active", active);
-      c.setAttribute("aria-pressed", active);
-    });
-    const filter = chip.dataset.filter;
-    document.querySelectorAll("[data-products] .product-card").forEach((card) => {
-      card.hidden = filter !== "todos" && card.dataset.category !== filter;
-    });
+    if (chip) setFilter(chip.dataset.filter);
   });
+}
+
+function productCard(p) {
+  const art = p.art || {};
+  return `
+      <article class="product-card${p.category === "mini" ? " product-card--mini" : ""}" id="p-${escapeHTML(p.id)}" data-id="${escapeHTML(p.id)}" data-name="${escapeHTML(p.name)}" data-price="${p.price}" data-category="${escapeHTML(p.category)}">
+        ${p.tag ? `<span class="tag${art.dark ? " tag--pink" : ""}">${escapeHTML(p.tag)}</span>` : ""}
+        <div class="product-media" style="--media-bg:${art.bg || "var(--bg-alt)"}">${productMedia(p)}</div>
+        <div class="product-body">
+          <h4 class="product-name">${escapeHTML(p.name)}</h4>
+          ${p.description ? `<p class="product-desc">${escapeHTML(p.description)}</p>` : ""}
+          <div class="product-foot">
+            <span class="price${p.price > 0 && !p.priceLabel ? "" : " price--note"}">${escapeHTML(priceText(p))}</span>
+            <button class="btn btn-primary btn-add" type="button" aria-label="Adicionar ${escapeHTML(p.name)} ao pedido">Adicionar</button>
+          </div>
+        </div>
+      </article>`;
 }
 
 function renderProducts() {
   const el = document.querySelector("[data-products]");
   if (!el) return;
-  el.innerHTML = catalog.products
-    .map((p) => {
-      const art = p.art || {};
+  el.innerHTML = catalog.categories
+    .map((c) => {
+      const items = catalog.products.filter((p) => p.category === c.id);
+      if (!items.length) return "";
       return `
-      <article class="product-card" id="p-${escapeHTML(p.id)}" data-id="${escapeHTML(p.id)}" data-name="${escapeHTML(p.name)}" data-price="${p.price}" data-category="${escapeHTML(p.category)}">
-        ${p.tag ? `<span class="tag${art.dark ? " tag--pink" : ""}">${escapeHTML(p.tag)}</span>` : ""}
-        <div class="product-media" style="--media-bg:${art.bg || "var(--bg-alt)"}">${productMedia(p)}</div>
-        <div class="product-body">
-          <h3 class="product-name">${escapeHTML(p.name)}</h3>
-          ${p.description ? `<p class="product-desc">${escapeHTML(p.description)}</p>` : ""}
-          <div class="product-foot">
-            <span class="price">${formatBRL(p.price)}</span>
-            <button class="btn btn-primary btn-add" type="button" aria-label="Adicionar ${escapeHTML(p.name)} ao pedido">Adicionar</button>
-          </div>
-        </div>
-      </article>`;
+      <section class="menu-group" data-category="${escapeHTML(c.id)}" aria-labelledby="cat-${escapeHTML(c.id)}">
+        <h3 class="menu-group-title" id="cat-${escapeHTML(c.id)}">${escapeHTML(c.name)} <span>${items.length}</span></h3>
+        <div class="product-grid${c.id === "mini" ? " product-grid--mini" : ""}">${items.map(productCard).join("")}</div>
+      </section>`;
     })
     .join("");
+}
+
+/* ---------- menu mobile ---------- */
+function setMenu(open) {
+  const toggle = document.querySelector("[data-menu-toggle]");
+  const menu = document.querySelector("[data-menu]");
+  if (!toggle || !menu) return;
+  toggle.setAttribute("aria-expanded", open);
+  toggle.setAttribute("aria-label", open ? "Fechar menu" : "Abrir menu");
+  menu.classList.toggle("is-open", open);
 }
 
 /* ---------- carrinho ---------- */
@@ -134,7 +175,7 @@ function addToCart(id, name, price) {
     void el.offsetWidth;
     el.classList.add("bump");
   });
-  showToast(`${name} adicionado ao pedido`);
+  showToast("Adicionado ao pedido!");
 }
 
 function changeQty(id, delta) {
@@ -180,9 +221,9 @@ function renderCart() {
       <div class="cart-line" data-id="${escapeHTML(item.id)}">
         <div>
           <div class="cart-line-name">${escapeHTML(item.name)}</div>
-          <div class="cart-line-unit">${formatBRL(item.price)} cada</div>
+          <div class="cart-line-unit">${item.price > 0 ? `${formatBRL(item.price)} cada` : "valor a confirmar"}</div>
         </div>
-        <div class="cart-line-sub">${formatBRL(item.price * item.qty)}</div>
+        <div class="cart-line-sub">${item.price > 0 ? formatBRL(item.price * item.qty) : "—"}</div>
         <div class="qty">
           <button type="button" data-action="dec" aria-label="Diminuir ${escapeHTML(item.name)}">&minus;</button>
           <span aria-live="polite">${item.qty}</span>
@@ -221,9 +262,14 @@ function closeCart() {
 
 /* ---------- WhatsApp ---------- */
 function buildMessage() {
-  const lines = ["Olá, Bem Querer! Gostaria de fazer o seguinte pedido:", ""];
-  cart.forEach((item) => lines.push(`• ${item.qty}x ${item.name} — ${formatBRL(item.price * item.qty)}`));
+  const lines = ["Olá, Bem Querer Dom Pedro - Ipiranga! Gostaria de fazer o seguinte pedido:", ""];
+  cart.forEach((item) => {
+    const value = item.price > 0 ? formatBRL(item.price * item.qty) : "valor a confirmar";
+    lines.push(`• ${item.qty}x ${item.name} — ${value}`);
+  });
   lines.push("", `Total: ${formatBRL(cartTotal())}`);
+  if (cart.some((item) => !(item.price > 0))) lines.push("(alguns itens com valor a confirmar)");
+  lines.push("", "Entrega ou retirada?");
   return lines.join("\n");
 }
 
@@ -256,7 +302,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const addBtn = e.target.closest(".btn-add");
     if (addBtn) {
       const card = addBtn.closest(".product-card");
-      addToCart(card.dataset.id, card.dataset.name, parseFloat(card.dataset.price));
+      const cat = catalog.categories.find((c) => c.id === card.dataset.category);
+      const name = cat && cat.id !== "caixa" ? `${card.dataset.name} (${cat.name})` : card.dataset.name;
+      addToCart(card.dataset.id, name, parseFloat(card.dataset.price));
       const label = addBtn.textContent;
       addBtn.textContent = "Adicionado!";
       addBtn.classList.add("is-added");
@@ -266,6 +314,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }, 1100);
       return;
     }
+    if (e.target.closest(".featured-card")) setFilter("todos");
+    const toggle = e.target.closest("[data-menu-toggle]");
+    if (toggle) setMenu(toggle.getAttribute("aria-expanded") !== "true");
+    else if (e.target.closest("[data-menu] a") || !e.target.closest("[data-menu]")) setMenu(false);
     if (e.target.closest("[data-open-cart]")) openCart();
     if (e.target.closest("[data-close-cart]")) closeCart();
   });
@@ -283,6 +335,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelector("[data-checkout]").addEventListener("click", checkout);
 
   document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") setMenu(false);
     const drawer = document.getElementById("cart");
     if (!drawer.classList.contains("is-open")) return;
     if (e.key === "Escape") closeCart();

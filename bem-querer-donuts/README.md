@@ -16,7 +16,8 @@ Para ver: abra `index.html` no navegador.
 
 ## Antes de publicar (pendências)
 
-- [ ] **Cardápio real**: os produtos de `js/catalog.js` são exemplos. Substituir pelos sabores, categorias, descrições e preços reais.
+- [x] **Cardápio real**: `js/catalog.js` copiado do cardápio da unidade Dom Pedro - Ipiranga (Saipos). Itens com preço 0 aparecem como "Consulte o valor".
+- [ ] **Foto do hero**: `assets/hero-donut*` é a imagem de referência enviada; trocar por uma foto própria (ou confirmar o direito de uso).
 - [ ] **Fotos**: colocar as fotos em `assets/fotos/` e preencher `image` de cada produto. Sem foto, o site desenha um donut ilustrado.
 - [ ] **Logo**: trocar o texto "BEM QUERER" no header e no rodapé de `index.html` pela logo original (`<img src="assets/logo.png" ...>`), sem distorcer.
 - [ ] **WhatsApp**: preencher `WHATSAPP_NUMBER` em `js/main.js` (ex.: `5511999999999`).
